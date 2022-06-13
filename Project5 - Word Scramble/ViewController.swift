@@ -30,6 +30,11 @@ class ViewController: UITableViewController {
         }
         
         startGame()
+        
+        let defaults = UserDefaults.standard
+        
+        title = defaults.string(forKey: "title")
+        usedWords = defaults.object(forKey: "usedWords") as? [String] ?? usedWords
     }
 
     @objc func startGame() {
@@ -74,6 +79,8 @@ class ViewController: UITableViewController {
                     
                     let indexPath = IndexPath(row: 0, section: 0)
                     tableView.insertRows(at: [indexPath], with: .automatic)
+                    
+                    save(usedWords: usedWords, title: title!)
                     
                     return
                 } else {
@@ -136,6 +143,13 @@ class ViewController: UITableViewController {
         let ac = UIAlertController(title: title, message: messege, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         present(ac, animated: true)
+    }
+    
+    func save(usedWords: [String], title: String) {
+        let defaults = UserDefaults.standard
+        
+        defaults.set(usedWords, forKey: "usedWords")
+        defaults.set(title, forKey: "title")
     }
 }
 
